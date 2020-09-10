@@ -1,0 +1,19 @@
+.table{
+    margin-top: 20px;
+    overflow: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+    height: 300px;
+}
+
+.table tr:nth-of-type(odd){
+    background-color: rgb(209, 244, 255);
+}
+
+.table td{
+    padding:0.3rem;
+}
+.table tr{
+    display: flex;
+    justify-content: space-between;
+}
