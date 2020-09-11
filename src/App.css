@@ -5,6 +5,7 @@
 
 body{
   background-color: #08082c;
+  padding: 15px;
 }
 .app{
   display: flex;
@@ -27,6 +28,8 @@ body{
 }
 .app__header .form{
   background-color: #fff;
+  margin-top: 5px;
+  border-radius: 10px;
 }
 .app__stats{
   display: flex;
@@ -38,9 +41,58 @@ body{
 .infobox{
   flex: 1;
 }
+.infobox:hover{
+  -webkit-box-shadow: 6px -1px 54px -18px rgba(230,218,230,1);
+  -moz-box-shadow: 6px -1px 54px -18px rgba(230,218,230,1);
+  box-shadow: 6px -1px 54px -18px rgba(230,218,230,1);
+
+}
 .infobox:not(:last-child){
   margin-right: 10px;
 }
+
+.infobox__cases{
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: crimson;
+}
+.infobox__total{
+  color: #65757d;
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+
+}
+.app__right{
+  margin:5px 0px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.app__graph{
+  flex-grow: 1;
+  
+}
+
+.infobox--cases{
+  border-top: 10px solid rgb(250, 24, 61);
+
+}
+
+.infobox--recovered{
+  border-top: 10px solid rgb(43, 250, 24);
+}
+
+.infobox--deaths{
+  border-top: 10px solid rgb(250, 88, 24);
+}
+.graphTitle{
+  margin-bottom: 20px;
+}
+
 /* Media Queries */
 
 @media (max-width:990px){

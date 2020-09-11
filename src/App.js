@@ -3,7 +3,7 @@ import './App.css';
 import {Card, FormControl,MenuItem,Select} from '@material-ui/core'
 import InfoBox from './components/InfoBox';
 import Table from './components/Table'
-import { sortData } from './utils/sortdata';
+import { sortData } from './utils/utils';
 import LineGraph from './components/LineGraph';
 import MapComponent from './components/Map';
 import 'leaflet/dist/leaflet.css'
@@ -19,6 +19,7 @@ function App() {
     lat:34.80746,lng:-40.4796
   })
   const [mapCountries,setMapCountries] = useState([])
+  const [casesType,setCasesType] = useState('cases')
   useEffect(() =>{
         const getCountryInfo = async () =>{
           await fetch('https://disease.sh/v3/covid-19/all')
@@ -61,13 +62,18 @@ function App() {
   const handleCountryChange = async (event) =>{
       const countryCode = event.target.value;
       const url = countryCode === 'worldwide' ? 'https://disease.sh/v3/covid-19/all':`https://disease.sh/v3/covid-19/countries/${countryCode}`
-      
       await fetch(url)
       .then(response => response.json())
       .then(data =>{
         setCountry(countryCode)
         setCountryInfo(data)
-        setMapCenter({lat:data.countryInfo.lat,lng:data.countryInfo.long})
+        if(event.target.value === 'worldwide'){
+            setMapCenter({ lat:34.80746,lng:-40.4796})
+            
+        }else{
+          setMapCenter({lat:data.countryInfo.lat,lng:data.countryInfo.long})
+        }
+        
         setMapZoom(4)
       })
       
@@ -97,23 +103,41 @@ function App() {
       </div>
 
       <div className="app__stats">
-      <InfoBox title="Coronovirus Cases" cases={countryInfo.todayCases} total={countryInfo.cases}/>
-      <InfoBox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered}/>
-      <InfoBox title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths}/>
+      <InfoBox 
+      active={casesType === 'cases'}
+      type={casesType}
+      onClick={(e) => setCasesType('cases')}
+      title="Coronovirus Cases" cases={countryInfo.todayCases} total={countryInfo.cases}/>
+
+      <InfoBox 
+      type={casesType}
+      active={casesType === 'recovered'}
+      onClick={(e) => setCasesType('recovered')}
+      title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered}/>
+      
+      <InfoBox 
+      type={casesType}
+      active={casesType === 'deaths'}
+      onClick={(e) => setCasesType('deaths')}
+      title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths}/>
 
         
       </div>
 
-       <MapComponent center={mapCenter} zoom={mapZoom} countries={mapCountries} casesType="cases"/>           
+       <MapComponent center={mapCenter} zoom={mapZoom} countries={mapCountries} casesType={casesType}/>           
 
       </div>
 
 
-      <Card className='app__right'>
-        <h3>Live Cases by country</h3>
-          <Table countries={tableData}/>
-          <h3>Worldwide New Cases</h3>
-          <LineGraph />
+    <Card className='app__right'>
+   
+      <h3>Live Cases by country</h3>
+      <Table countries={tableData}/>
+  
+      
+        <h3 className='graphTitle'>Worldwide new {casesType}</h3>
+        <LineGraph  casesType={casesType}/>
+      
       </Card>
        
     </div>

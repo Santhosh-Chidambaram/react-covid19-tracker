@@ -2,6 +2,7 @@
 import React,{useState,useEffect} from 'react'
 import {Line} from 'react-chartjs-2'
 import numeral from 'numeral'
+import { caseTypeColor } from '../utlis';
 const options = {
     legend:{
         display:false,
@@ -47,20 +48,20 @@ const options = {
 }
 
 
-function LineGraph() {
+function LineGraph({casesType,...props}) {
     const [data,setData] = useState([])
     useEffect(() =>{
        const fetchData = async() => {
            await fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=120')
         .then((response) => response.json())
         .then(data =>{
-           let chartData = buildChartData(data,"cases");
+           let chartData = buildChartData(data,casesType);
            setData(chartData);
         })
     }
 
     fetchData()
-    },[])
+    },[casesType])
 
     const buildChartData = (data,casesType='cases') =>{
         const chartData = [];
@@ -79,7 +80,7 @@ function LineGraph() {
 
     }
     return (
-        <div>
+        <div className='app_graph'>
             {
                 data.length > 0 &&
                 <Line 
@@ -87,8 +88,8 @@ function LineGraph() {
                 data={{
                     datasets:[
                         {
-                            backgroundColor:'rgba(204,16,52,0.5)',
-                            borderColor:'#cc1034',
+                            backgroundColor:caseTypeColor[casesType].rgba,
+                            borderColor:caseTypeColor[casesType].hex,
                             data:data,
                         }
                     ]

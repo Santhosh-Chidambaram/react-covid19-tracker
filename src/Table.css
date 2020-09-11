@@ -3,7 +3,8 @@
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-    height: 300px;
+    height: 350px;
+    margin-bottom: 20px;
 }
 
 .table tr:nth-of-type(odd){
